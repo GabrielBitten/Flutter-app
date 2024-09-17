@@ -1,6 +1,5 @@
 import "package:appflutter/categoria.dart";
 
-
 class Projeto {
   String titulo;
   String descricao;
@@ -16,17 +15,15 @@ class Projeto {
     required this.categoria,
   });
 
-
   Map<String, dynamic> toMap() {
     return {
       'titulo': titulo,
       'descricao': descricao,
       'link': link,
       'imageUrl': imageUrl,
-      'categoria': categoria.toString(), 
+      'categoria': categoria.name, // Salva apenas o nome da categoria
     };
   }
-
 
   factory Projeto.fromMap(Map<String, dynamic> map) {
     return Projeto(
@@ -34,15 +31,18 @@ class Projeto {
       descricao: map['descricao'] ?? '',
       link: map['link'] ?? '',
       imageUrl: map['imageUrl'] ?? '',
-      categoria: _categoryFromString(map['categoria'] ?? 'ProjectCategory.other'),
+      categoria: ProjectCategory.values.firstWhere(
+        (e) => e.name == map['categoria'],
+        orElse: () => ProjectCategory.outros,
+      ),
     );
   }
 
- 
+  // ignore: unused_element
   static ProjectCategory _categoryFromString(String category) {
     return ProjectCategory.values.firstWhere(
       (e) => e.toString() == category,
-      orElse: () => ProjectCategory.other,
+      orElse: () => ProjectCategory.outros,
     );
   }
 }

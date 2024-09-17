@@ -1,10 +1,11 @@
+import 'package:appflutter/projeto.dart';
 import 'package:flutter/material.dart';
+
 
 class ProjectInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final Map<String, String> projeto =
-        ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+    final Projeto projeto = ModalRoute.of(context)!.settings.arguments as Projeto;
 
     return Scaffold(
       appBar: AppBar(
@@ -23,14 +24,14 @@ class ProjectInfo extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.network(
-              projeto['imageUrl']!,
+              projeto.imageUrl,
               width: double.infinity,
               height: 200,
               fit: BoxFit.cover,
             ),
             const SizedBox(height: 16),
             Text(
-              projeto['titulo']!,
+              projeto.titulo,
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -38,12 +39,21 @@ class ProjectInfo extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              projeto['descricao']!,
+              projeto.descricao,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.normal,
               ),
               textAlign: TextAlign.justify,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Categoria: ${projeto.categoria.name}',
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.normal,
+                fontStyle: FontStyle.italic,
+              ),
             ),
             const SizedBox(height: 100),
             Row(
@@ -51,7 +61,9 @@ class ProjectInfo extends StatelessWidget {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      // Ação de editar o projeto
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       shape: RoundedRectangleBorder(
@@ -72,7 +84,9 @@ class ProjectInfo extends StatelessWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      // Ação de excluir o projeto
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFF20808),
                       shape: RoundedRectangleBorder(
@@ -96,7 +110,10 @@ class ProjectInfo extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  // Ação de acessar o link do projeto
+                  
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF39D301),
                   shape: RoundedRectangleBorder(
@@ -119,4 +136,6 @@ class ProjectInfo extends StatelessWidget {
       ),
     );
   }
+
+ 
 }

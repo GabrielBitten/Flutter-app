@@ -1,44 +1,45 @@
+import 'package:appflutter/categoria.dart'; 
 import 'package:appflutter/my_app.dart';
+import 'package:appflutter/projeto.dart';
 import 'package:flutter/material.dart';
+ 
 
 class ProjectList extends StatelessWidget {
-  final List<Map<String, String>> lista = [
-    {
-      'titulo': 'Meu Primeiro Projeto',
-      'descricao': 'Este é o meu primeiro projeto de exemplo.',
-      'link': 'https://gabrielbitten.github.io/Portfolio/',
-      'imageUrl':
+  final List<Projeto> lista = [
+    Projeto(
+      titulo: 'Meu Primeiro Projeto',
+      descricao: 'Este é o meu primeiro projeto de exemplo.',
+      link: 'https://gabrielbitten.github.io/Portfolio/',
+      imageUrl:
           'https://storage.googleapis.com/website-production/uploads/2023/07/sweetkick-landing-page-example-1.png',
-      'categoria': 'ProjectCategory.webDevelopment',
-    },
-    {
-      'titulo': 'Projeto Flutter',
-      'descricao':
-          'Aplicativo Flutter que desenvolvi Aplicativo Flutter que desenvolvi recentemente Aplicativo Flutter que desenvolvi recentemente Aplicativo Flutter que desenvolvi recentemente.',
-      'link': 'https://gabrielbitten.github.io/Portfolio/',
-      'imageUrl':
+      categoria: ProjectCategory.desenvolvimentoDeJogos,
+    ),
+    Projeto(
+      titulo: 'Projeto Flutter',
+      descricao:
+          'Aplicativo Flutter que desenvolvi recentemente.',
+      link: 'https://gabrielbitten.github.io/Portfolio/',
+      imageUrl:
           'https://storage.googleapis.com/website-production/uploads/2023/07/sweetkick-landing-page-example-1.png',
-      'categoria': 'ProjectCategory.gameDevelopment',
-    },
-    {
-      'titulo': 'E-commerce Website',
-      'descricao': 'Website de e-commerce feito com React e Node.js.',
-      'link': 'https://gabrielbitten.github.io/Portfolio/',
-      'imageUrl':
+      categoria: ProjectCategory.desenvolvimentoMobile,
+    ),
+    Projeto(
+      titulo: 'E-commerce Website',
+      descricao: 'Website de e-commerce feito com React e Node.js.',
+      link: 'https://gabrielbitten.github.io/Portfolio/',
+      imageUrl:
           'https://storage.googleapis.com/website-production/uploads/2023/07/sweetkick-landing-page-example-1.png',
-      'categoria': 'ProjectCategory.mobileDevelopment'
-    },
-    {
-      'titulo': 'E-commerce Website',
-      'descricao': 'Website de e-commerce feito com React e Node.js.',
-      'link': 'https://gabrielbitten.github.io/Portfolio/',
-      'imageUrl':
+      categoria: ProjectCategory.design,
+    ),
+    Projeto(
+      titulo: 'E-commerce Mobile',
+      descricao: 'App de e-commerce desenvolvido em Flutter.',
+      link: 'https://gabrielbitten.github.io/Portfolio/',
+      imageUrl:
           'https://storage.googleapis.com/website-production/uploads/2023/07/sweetkick-landing-page-example-1.png',
-      'categoria': 'ProjectCategory.mobileDevelopment'
-    },
+      categoria: ProjectCategory.segurancaDaInformacao,
+    ),
   ];
-
-  get onPressed => null;
 
   @override
   Widget build(BuildContext context) {
@@ -75,19 +76,26 @@ class ProjectList extends StatelessWidget {
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: ListTile(
-              title: Text(projeto['titulo']!),
-              subtitle: Text(projeto['categoria']!),
+              title: Text(projeto.titulo,
+               style: const TextStyle(
+               fontSize: 20,
+               fontWeight:FontWeight.bold),),
+              
+              subtitle: Text(projeto.categoria.name), // Mostra o nome da categoria
               trailing: Container(
                 width: 100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     IconButton(
-                        onPressed: () {
-                          Navigator.of(context).pushNamed(MyApp.PROJECT_INFO,
-                              arguments: projeto);
-                        },
-                        icon: const Icon(Icons.open_in_new))
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(
+                          MyApp.PROJECT_INFO,
+                          arguments: projeto, // Passa o objeto Projeto
+                        );
+                      },
+                      icon: const Icon(Icons.open_in_new),
+                    ),
                   ],
                 ),
               ),

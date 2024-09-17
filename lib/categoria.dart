@@ -1,9 +1,15 @@
 enum ProjectCategory {
-  webDevelopment,
-  mobileDevelopment,
-  dataScience,
-  machineLearning,
-  gameDevelopment,
+  desenvolvimentoWeb,
+  desenvolvimentoMobile,
+  cienciaDeDados,
+  aprendizadoDeMaquina,
+  desenvolvimentoDeJogos,
   design,
-  other,
+  devops,
+  segurancaDaInformacao,
+  inteligenciaArtificial,
+  blockchain,
+  estruturaDeDados,
+  outros,
 }
+
