@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 
 
 class ProjectInfo extends StatelessWidget {
-    final Function(Projeto) onDelete;
+  final Function(Projeto) onDelete;
 
   const ProjectInfo({required this.onDelete, super.key});
+
   @override
   Widget build(BuildContext context) {
     final Projeto projeto = ModalRoute.of(context)!.settings.arguments as Projeto;
+    
 
     return Scaffold(
       appBar: AppBar(
@@ -107,6 +109,7 @@ class ProjectInfo extends StatelessWidget {
                               onPressed: () {
                                 Navigator.of(context).pop(); // Fecha o diálogo
                                 onDelete(projeto); // Chama a função de exclusão
+                                 
                                 Navigator.of(context).pop();
                               },
                             ),

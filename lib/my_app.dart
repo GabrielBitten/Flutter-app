@@ -6,8 +6,8 @@ import 'view/project_list.dart';
 
 class MyApp extends StatelessWidget {
   static const HOME = '/';
-  static const PROJECT_FORM = 'project_form';
-  static const PROJECT_INFO = 'project_info';
+  static const PROJECT_FORM = '/project_form';
+  static const PROJECT_INFO = '/project_info';
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +21,13 @@ class MyApp extends StatelessWidget {
         PROJECT_FORM: (context) => ProjectForm(),
         PROJECT_INFO: (context) => ProjectInfo(
           onDelete: (Projeto projeto) {
+           
             final projectListState = context.findAncestorStateOfType<ProjectListState>();
             projectListState?.removeProject(projeto);
           },
         ),
       },
+      initialRoute: HOME, 
     );
   }
 }

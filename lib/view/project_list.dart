@@ -1,20 +1,16 @@
-// ignore_for_file: library_private_types_in_public_api
 
 import 'package:appflutter/categoria.dart'; 
 import 'package:appflutter/my_app.dart';
 import 'package:appflutter/projeto.dart';
 import 'package:flutter/material.dart';
- 
 
 class ProjectList extends StatefulWidget {
-  
   @override
   ProjectListState createState() => ProjectListState();
 }
 
 class ProjectListState extends State<ProjectList> {
   // Lista de projetos inicial
-  
   List<Projeto> lista = [
     Projeto(
       titulo: 'Meu Primeiro Projeto',
@@ -29,16 +25,29 @@ class ProjectListState extends State<ProjectList> {
   // Função para adicionar um novo projeto à lista
   void adicionarProjeto(Projeto novoProjeto) {
     setState(() {
-      lista.add(novoProjeto); // Adiciona o novo projeto à lista e atualiza a UI
+      lista.add(novoProjeto);
+      _printTodosProjetos(); // Imprime a lista após adicionar um novo projeto
     });
   }
+
   void removeProject(Projeto projeto) {
     setState(() {
       lista.remove(projeto);
+      _printTodosProjetos(); // Imprime a lista após remover um projeto
     });
   }
-  
 
+ void _printTodosProjetos() {
+    print('Lista de Projetos:');
+    for (var projeto in lista) {
+      print('Título: ${projeto.titulo}');
+      print('Descrição: ${projeto.descricao}');
+      print('Link: ${projeto.link}');
+      print('Imagem URL: ${projeto.imageUrl}');
+      print('Categoria: ${projeto.categoria.name}');
+      print('---');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,7 +89,6 @@ class ProjectListState extends State<ProjectList> {
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: ListTile(
-              
               title: Text(
                 projeto.titulo,
                 style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -96,7 +104,9 @@ class ProjectListState extends State<ProjectList> {
                         Navigator.of(context).pushNamed(
                           MyApp.PROJECT_INFO,
                           arguments: projeto, // Passa o objeto Projeto
-                        );
+                        ).then((_) {
+                          setState(() {}); // Atualiza a lista quando retorna
+                        });
                       },
                       icon: const Icon(Icons.open_in_new),
                     ),
