@@ -1,8 +1,8 @@
 import 'dart:io';
-
+import 'package:appflutter/my_app.dart';
 import 'package:appflutter/projeto.dart';
 import 'package:flutter/material.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 
 class ProjectInfo extends StatelessWidget {
   final Function(Projeto) onDelete;
@@ -11,8 +11,8 @@ class ProjectInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Projeto projeto = ModalRoute.of(context)!.settings.arguments as Projeto;
-    
+    final Projeto projeto =
+        ModalRoute.of(context)!.settings.arguments as Projeto;
 
     return Scaffold(
       appBar: AppBar(
@@ -31,7 +31,7 @@ class ProjectInfo extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.file(
-               File(projeto.imageUrl),
+              File(projeto.imageUrl),
               width: double.infinity,
               height: 200,
               fit: BoxFit.cover,
@@ -69,7 +69,8 @@ class ProjectInfo extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      // Ação de editar o projeto
+                      Navigator.of(context)
+                          .pushNamed(MyApp.PROJECT_EDIT, arguments: projeto);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
@@ -92,11 +93,12 @@ class ProjectInfo extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                       showDialog(
+                      showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
                           title: const Text('Confirmar Exclusão'),
-                          content: const Text('Você tem certeza que deseja excluir este projeto?'),
+                          content: const Text(
+                              'Você tem certeza que deseja excluir este projeto?'),
                           actions: [
                             TextButton(
                               child: const Text('Cancelar'),
@@ -107,14 +109,13 @@ class ProjectInfo extends StatelessWidget {
                             TextButton(
                               child: const Text('Excluir'),
                               onPressed: () {
-                                Navigator.of(context).pop(); // Fecha o diálogo
-                                onDelete(projeto); // Chama a função de exclusão
-                                 
+                                Navigator.of(context).pop(); 
+                                onDelete(projeto); 
                                 Navigator.of(context).pop();
                               },
                             ),
                           ],
-                          ),
+                        ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -140,9 +141,18 @@ class ProjectInfo extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  // Ação de acessar o link do projeto
-                  
+                onPressed: () async {
+                  final url = Uri.parse(projeto.link);
+
+                  if (await canLaunchUrl(url)) {
+                    await launchUrl(url);
+                  } else {
+                    // ignore: use_build_context_synchronously
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text('Não foi possível abrir o link')),
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF39D301),
@@ -166,6 +176,4 @@ class ProjectInfo extends StatelessWidget {
       ),
     );
   }
-
- 
 }

@@ -10,7 +10,7 @@ class ProjectList extends StatefulWidget {
 }
 
 class ProjectListState extends State<ProjectList> {
-  // Lista de projetos inicial
+
   List<Projeto> lista = [
     Projeto(
       titulo: 'Meu Primeiro Projeto',
@@ -19,35 +19,25 @@ class ProjectListState extends State<ProjectList> {
       imageUrl: 'https://storage.googleapis.com/website-production/uploads/2023/07/sweetkick-landing-page-example-1.png',
       categoria: ProjectCategory.desenvolvimentoDeJogos,
     ),
-    // ... (outros projetos)
+
   ];
 
-  // Função para adicionar um novo projeto à lista
+  
   void adicionarProjeto(Projeto novoProjeto) {
     setState(() {
       lista.add(novoProjeto);
-      _printTodosProjetos(); // Imprime a lista após adicionar um novo projeto
+  
     });
   }
 
   void removeProject(Projeto projeto) {
     setState(() {
       lista.remove(projeto);
-      _printTodosProjetos(); // Imprime a lista após remover um projeto
+    
     });
   }
 
- void _printTodosProjetos() {
-    print('Lista de Projetos:');
-    for (var projeto in lista) {
-      print('Título: ${projeto.titulo}');
-      print('Descrição: ${projeto.descricao}');
-      print('Link: ${projeto.link}');
-      print('Imagem URL: ${projeto.imageUrl}');
-      print('Categoria: ${projeto.categoria.name}');
-      print('---');
-    }
-  }
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,11 +56,11 @@ class ProjectListState extends State<ProjectList> {
             iconSize: 35.0,
             color: Colors.white,
             onPressed: () async {
-              // Navega para o formulário e aguarda o resultado
+            
               final Projeto? novoProjeto = await Navigator.of(context).pushNamed(MyApp.PROJECT_FORM) as Projeto?;
               
               if (novoProjeto != null) {
-                // Se um novo projeto foi criado, adicione à lista
+                
                 adicionarProjeto(novoProjeto);
               }
             },
@@ -93,7 +83,7 @@ class ProjectListState extends State<ProjectList> {
                 projeto.titulo,
                 style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              subtitle: Text(projeto.categoria.name), // Mostra o nome da categoria
+              subtitle: Text(projeto.categoria.name), 
               trailing: SizedBox(
                 width: 100,
                 child: Row(
@@ -103,9 +93,9 @@ class ProjectListState extends State<ProjectList> {
                       onPressed: () {
                         Navigator.of(context).pushNamed(
                           MyApp.PROJECT_INFO,
-                          arguments: projeto, // Passa o objeto Projeto
+                          arguments: projeto, 
                         ).then((_) {
-                          setState(() {}); // Atualiza a lista quando retorna
+                          setState(() {}); 
                         });
                       },
                       icon: const Icon(Icons.open_in_new),

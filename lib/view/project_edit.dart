@@ -4,17 +4,32 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-class ProjectForm extends StatefulWidget {
+class ProjectEdit extends StatefulWidget {
   @override
-  _ProjectFormState createState() => _ProjectFormState();
+  _ProjectEditState createState() => _ProjectEditState();
 }
 
-class _ProjectFormState extends State<ProjectForm> {
-  final nameController = TextEditingController();
-  final descriptionController = TextEditingController();
-  final linkController = TextEditingController();
-  ProjectCategory? selectedCategory = ProjectCategory.desenvolvimentoWeb;
+class _ProjectEditState extends State<ProjectEdit> {
+  late TextEditingController nameController;
+  late TextEditingController descriptionController;
+  late TextEditingController linkController;
+  ProjectCategory? selectedCategory;
   XFile? _imageFile;
+  late String? _existingImagePath;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    
+    final Projeto projeto =
+        ModalRoute.of(context)!.settings.arguments as Projeto;
+
+    nameController = TextEditingController(text: projeto.titulo);
+    descriptionController = TextEditingController(text: projeto.descricao);
+    linkController = TextEditingController(text: projeto.link);
+    selectedCategory = projeto.categoria;
+    _existingImagePath = projeto.imageUrl;
+  }
 
   @override
   void dispose() {
@@ -36,7 +51,7 @@ class _ProjectFormState extends State<ProjectForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cadastro de Projeto'),
+        title: const Text('Editar projeto'),
         centerTitle: true,
         backgroundColor: const Color(0xFF2196F3),
         titleTextStyle: const TextStyle(
@@ -61,29 +76,26 @@ class _ProjectFormState extends State<ProjectForm> {
               ),
             ),
             const SizedBox(height: 20),
-            Container(
-              width: double.infinity,
-              child: DropdownButtonFormField<ProjectCategory>(
-                value: selectedCategory,
-                decoration: const InputDecoration(
-                  labelText: 'Categoria do Projeto',
-                  labelStyle: TextStyle(
-                    fontSize: 20,
-                  ),
-                  border: OutlineInputBorder(),
+            DropdownButtonFormField<ProjectCategory>(
+              value: selectedCategory,
+              decoration: const InputDecoration(
+                labelText: 'Categoria do Projeto',
+                labelStyle: TextStyle(
+                  fontSize: 20,
                 ),
-                items: ProjectCategory.values.map((ProjectCategory category) {
-                  return DropdownMenuItem<ProjectCategory>(
-                    value: category,
-                    child: Text(_categoryToString(category)),
-                  );
-                }).toList(),
-                onChanged: (ProjectCategory? newValue) {
-                  setState(() {
-                    selectedCategory = newValue;
-                  });
-                },
+                border: OutlineInputBorder(),
               ),
+              items: ProjectCategory.values.map((ProjectCategory category) {
+                return DropdownMenuItem<ProjectCategory>(
+                  value: category,
+                  child: Text(_categoryToString(category)),
+                );
+              }).toList(),
+              onChanged: (ProjectCategory? newValue) {
+                setState(() {
+                  selectedCategory = newValue;
+                });
+              },
             ),
             const SizedBox(height: 20),
             TextField(
@@ -123,25 +135,31 @@ class _ProjectFormState extends State<ProjectForm> {
                       fit: BoxFit.cover,
                     ),
                   )
-                : const Text('Nenhuma imagem selecionada'),
+                : _existingImagePath != null
+                    ? SizedBox(
+                        width: 100,
+                        height: 100,
+                        child: Image.file(
+                          File(_existingImagePath!),
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : const Text('Nenhuma imagem selecionada'),
             const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // ignore: unused_local_variable
                   final novoProjeto = Projeto(
-                      titulo: nameController.text,
-                      descricao: descriptionController.text,
-                      link: linkController.text,
-                      imageUrl: _imageFile?.path ??
-                          '', 
-                      categoria: selectedCategory!
-                      );
-                      
-                         Navigator.of(context).pop(novoProjeto);
+                    titulo: nameController.text,
+                    descricao: descriptionController.text,
+                    link: linkController.text,
+                    imageUrl: _imageFile?.path ?? _existingImagePath ?? '',
+                    categoria: selectedCategory!,
+                  );
+                  Navigator.of(context).pop(novoProjeto);
+                   Navigator.of(context).pop(novoProjeto);
                 },
-                
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF39D301),
                   shape: RoundedRectangleBorder(
