@@ -1,4 +1,5 @@
 import 'package:appflutter/categoria.dart';
+import 'package:appflutter/projeto.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -12,7 +13,6 @@ class _ProjectFormState extends State<ProjectForm> {
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   final linkController = TextEditingController();
-
   ProjectCategory? selectedCategory = ProjectCategory.desenvolvimentoWeb;
   XFile? _imageFile;
 
@@ -129,14 +129,23 @@ class _ProjectFormState extends State<ProjectForm> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                 
+                  // ignore: unused_local_variable
+                  final novoProjeto = Projeto(
+                      titulo: nameController.text,
+                      descricao: descriptionController.text,
+                      link: linkController.text,
+                      imageUrl: _imageFile?.path ??
+                          '', // Verifica se a imagem foi selecionada
+                      categoria: selectedCategory!);
+                         Navigator.of(context).pop(novoProjeto);
                 },
+                
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF39D301),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
                 ),
                 child: const Text(
                   'Salvar',

@@ -1,3 +1,4 @@
+import 'package:appflutter/projeto.dart';
 import 'package:appflutter/view/project_form.dart';
 import 'package:appflutter/view/project_info.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,12 @@ class MyApp extends StatelessWidget {
       routes: {
         HOME: (context) => ProjectList(),
         PROJECT_FORM: (context) => ProjectForm(),
-        PROJECT_INFO: (context) => ProjectInfo()
+        PROJECT_INFO: (context) => ProjectInfo(
+          onDelete: (Projeto projeto) {
+            final projectListState = context.findAncestorStateOfType<ProjectListState>();
+            projectListState?.removeProject(projeto);
+          },
+        ),
       },
     );
   }

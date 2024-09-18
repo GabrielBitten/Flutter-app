@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:appflutter/projeto.dart';
 import 'package:flutter/material.dart';
 
 
 class ProjectInfo extends StatelessWidget {
+    final Function(Projeto) onDelete;
+
+  const ProjectInfo({required this.onDelete, super.key});
   @override
   Widget build(BuildContext context) {
     final Projeto projeto = ModalRoute.of(context)!.settings.arguments as Projeto;
@@ -23,8 +28,8 @@ class ProjectInfo extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.network(
-              projeto.imageUrl,
+            Image.file(
+               File(projeto.imageUrl),
               width: double.infinity,
               height: 200,
               fit: BoxFit.cover,
@@ -85,7 +90,29 @@ class ProjectInfo extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      // Ação de excluir o projeto
+                       showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Confirmar Exclusão'),
+                          content: const Text('Você tem certeza que deseja excluir este projeto?'),
+                          actions: [
+                            TextButton(
+                              child: const Text('Cancelar'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: const Text('Excluir'),
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Fecha o diálogo
+                                onDelete(projeto); // Chama a função de exclusão
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                          ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFF20808),

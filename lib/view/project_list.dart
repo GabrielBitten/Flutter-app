@@ -1,45 +1,43 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:appflutter/categoria.dart'; 
 import 'package:appflutter/my_app.dart';
 import 'package:appflutter/projeto.dart';
 import 'package:flutter/material.dart';
  
 
-class ProjectList extends StatelessWidget {
-  final List<Projeto> lista = [
+class ProjectList extends StatefulWidget {
+  
+  @override
+  ProjectListState createState() => ProjectListState();
+}
+
+class ProjectListState extends State<ProjectList> {
+  // Lista de projetos inicial
+  
+  List<Projeto> lista = [
     Projeto(
       titulo: 'Meu Primeiro Projeto',
       descricao: 'Este é o meu primeiro projeto de exemplo.',
       link: 'https://gabrielbitten.github.io/Portfolio/',
-      imageUrl:
-          'https://storage.googleapis.com/website-production/uploads/2023/07/sweetkick-landing-page-example-1.png',
+      imageUrl: 'https://storage.googleapis.com/website-production/uploads/2023/07/sweetkick-landing-page-example-1.png',
       categoria: ProjectCategory.desenvolvimentoDeJogos,
     ),
-    Projeto(
-      titulo: 'Projeto Flutter',
-      descricao:
-          'Aplicativo Flutter que desenvolvi recentemente.',
-      link: 'https://gabrielbitten.github.io/Portfolio/',
-      imageUrl:
-          'https://storage.googleapis.com/website-production/uploads/2023/07/sweetkick-landing-page-example-1.png',
-      categoria: ProjectCategory.desenvolvimentoMobile,
-    ),
-    Projeto(
-      titulo: 'E-commerce Website',
-      descricao: 'Website de e-commerce feito com React e Node.js.',
-      link: 'https://gabrielbitten.github.io/Portfolio/',
-      imageUrl:
-          'https://storage.googleapis.com/website-production/uploads/2023/07/sweetkick-landing-page-example-1.png',
-      categoria: ProjectCategory.design,
-    ),
-    Projeto(
-      titulo: 'E-commerce Mobile',
-      descricao: 'App de e-commerce desenvolvido em Flutter.',
-      link: 'https://gabrielbitten.github.io/Portfolio/',
-      imageUrl:
-          'https://storage.googleapis.com/website-production/uploads/2023/07/sweetkick-landing-page-example-1.png',
-      categoria: ProjectCategory.segurancaDaInformacao,
-    ),
+    // ... (outros projetos)
   ];
+
+  // Função para adicionar um novo projeto à lista
+  void adicionarProjeto(Projeto novoProjeto) {
+    setState(() {
+      lista.add(novoProjeto); // Adiciona o novo projeto à lista e atualiza a UI
+    });
+  }
+  void removeProject(Projeto projeto) {
+    setState(() {
+      lista.remove(projeto);
+    });
+  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +56,14 @@ class ProjectList extends StatelessWidget {
             icon: const Icon(Icons.add),
             iconSize: 35.0,
             color: Colors.white,
-            onPressed: () {
-              Navigator.of(context).pushNamed(MyApp.PROJECT_FORM);
+            onPressed: () async {
+              // Navega para o formulário e aguarda o resultado
+              final Projeto? novoProjeto = await Navigator.of(context).pushNamed(MyApp.PROJECT_FORM) as Projeto?;
+              
+              if (novoProjeto != null) {
+                // Se um novo projeto foi criado, adicione à lista
+                adicionarProjeto(novoProjeto);
+              }
             },
           )
         ],
@@ -76,13 +80,13 @@ class ProjectList extends StatelessWidget {
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: ListTile(
-              title: Text(projeto.titulo,
-               style: const TextStyle(
-               fontSize: 20,
-               fontWeight:FontWeight.bold),),
               
+              title: Text(
+                projeto.titulo,
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
               subtitle: Text(projeto.categoria.name), // Mostra o nome da categoria
-              trailing: Container(
+              trailing: SizedBox(
                 width: 100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,

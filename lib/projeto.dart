@@ -38,11 +38,5 @@ class Projeto {
     );
   }
 
-  // ignore: unused_element
-  static ProjectCategory _categoryFromString(String category) {
-    return ProjectCategory.values.firstWhere(
-      (e) => e.toString() == category,
-      orElse: () => ProjectCategory.outros,
-    );
-  }
+ 
 }
