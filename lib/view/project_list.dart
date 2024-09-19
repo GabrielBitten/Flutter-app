@@ -1,4 +1,3 @@
-
 import 'package:appflutter/categoria.dart'; 
 import 'package:appflutter/my_app.dart';
 import 'package:appflutter/projeto.dart';
@@ -19,25 +18,20 @@ class ProjectListState extends State<ProjectList> {
       imageUrl: 'https://storage.googleapis.com/website-production/uploads/2023/07/sweetkick-landing-page-example-1.png',
       categoria: ProjectCategory.desenvolvimentoDeJogos,
     ),
-
   ];
 
-  
   void adicionarProjeto(Projeto novoProjeto) {
     setState(() {
       lista.add(novoProjeto);
-  
     });
   }
 
   void removeProject(Projeto projeto) {
     setState(() {
       lista.remove(projeto);
-    
     });
   }
 
- 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,11 +50,8 @@ class ProjectListState extends State<ProjectList> {
             iconSize: 35.0,
             color: Colors.white,
             onPressed: () async {
-            
               final Projeto? novoProjeto = await Navigator.of(context).pushNamed(MyApp.PROJECT_FORM) as Projeto?;
-              
               if (novoProjeto != null) {
-                
                 adicionarProjeto(novoProjeto);
               }
             },
@@ -83,9 +74,9 @@ class ProjectListState extends State<ProjectList> {
                 projeto.titulo,
                 style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              subtitle: Text(projeto.categoria.name), 
+              subtitle: Text(projeto.categoria.name),
               trailing: SizedBox(
-                width: 100,
+                width: 150,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -93,12 +84,40 @@ class ProjectListState extends State<ProjectList> {
                       onPressed: () {
                         Navigator.of(context).pushNamed(
                           MyApp.PROJECT_INFO,
-                          arguments: projeto, 
+                          arguments: projeto,
                         ).then((_) {
-                          setState(() {}); 
+                          setState(() {});
                         });
                       },
                       icon: const Icon(Icons.open_in_new),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Confirmar Exclusão'),
+                            content: const Text(
+                                'Você tem certeza que deseja excluir este projeto?'),
+                            actions: [
+                              TextButton(
+                                child: const Text('Cancelar'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              TextButton(
+                                child: const Text('Excluir'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  removeProject(projeto);
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.delete),
                     ),
                   ],
                 ),

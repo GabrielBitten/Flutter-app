@@ -158,7 +158,7 @@ class _ProjectEditState extends State<ProjectEdit> {
                     categoria: selectedCategory!,
                   );
                   Navigator.of(context).pop(novoProjeto);
-                   Navigator.of(context).pop(novoProjeto);
+                   
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF39D301),

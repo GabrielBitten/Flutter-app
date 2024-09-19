@@ -68,9 +68,20 @@ class ProjectInfo extends StatelessWidget {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context)
+                    onPressed: () async {
+                      final projetoEditado = await Navigator.of(context)
                           .pushNamed(MyApp.PROJECT_EDIT, arguments: projeto);
+                      if (projetoEditado != null && projetoEditado is Projeto) {
+                        // ignore: use_build_context_synchronously
+                        
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ProjectInfo(onDelete: onDelete),
+                            settings: RouteSettings(arguments: projetoEditado),
+                          ),
+                        );
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
@@ -89,52 +100,8 @@ class ProjectInfo extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Confirmar Exclusão'),
-                          content: const Text(
-                              'Você tem certeza que deseja excluir este projeto?'),
-                          actions: [
-                            TextButton(
-                              child: const Text('Cancelar'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              child: const Text('Excluir'),
-                              onPressed: () {
-                                Navigator.of(context).pop(); 
-                                onDelete(projeto); 
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFF20808),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                    child: const Text(
-                      'Excluir',
-                      style: TextStyle(
-                        fontSize: 24,
-                        height: 2,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
+               
+               
               ],
             ),
             const SizedBox(height: 8),
