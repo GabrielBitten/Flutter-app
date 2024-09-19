@@ -62,48 +62,7 @@ class ProjectInfo extends StatelessWidget {
                 fontStyle: FontStyle.italic,
               ),
             ),
-            const SizedBox(height: 100),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      final projetoEditado = await Navigator.of(context)
-                          .pushNamed(MyApp.PROJECT_EDIT, arguments: projeto);
-                      if (projetoEditado != null && projetoEditado is Projeto) {
-                        // ignore: use_build_context_synchronously
-                        
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ProjectInfo(onDelete: onDelete),
-                            settings: RouteSettings(arguments: projetoEditado),
-                          ),
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                    child: const Text(
-                      'Editar',
-                      style: TextStyle(
-                        fontSize: 24,
-                        height: 2,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-               
-               
-              ],
-            ),
+           
             const SizedBox(height: 8),
             SizedBox(
               width: double.infinity,

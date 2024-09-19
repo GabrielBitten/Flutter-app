@@ -1,8 +1,8 @@
 import 'package:appflutter/categoria.dart';
-import 'package:uuid/uuid.dart'; // Importa a biblioteca uuid
+import 'package:uuid/uuid.dart'; 
 
 class Projeto {
-  String id; // Campo id para identificar o projeto
+  String id; 
   String titulo;
   String descricao;
   String link;
@@ -15,16 +15,16 @@ class Projeto {
     required this.link,
     required this.imageUrl,
     required this.categoria,
-  }) : id = Uuid().v4(); // Gera um novo UUID automaticamente
+  }) : id = Uuid().v4(); 
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id, // Inclui o ID no mapa
+      'id': id, 
       'titulo': titulo,
       'descricao': descricao,
       'link': link,
       'imageUrl': imageUrl,
-      'categoria': categoria.name, // Salva apenas o nome da categoria
+      'categoria': categoria.name, 
     };
   }
 
@@ -38,6 +38,6 @@ class Projeto {
         (e) => e.name == map['categoria'],
         orElse: () => ProjectCategory.outros,
       ),
-    )..id = map['id'] ?? Uuid().v4(); // Gera um novo UUID se o ID não estiver no mapa
+    )..id = map['id'] ?? Uuid().v4(); 
   }
 }

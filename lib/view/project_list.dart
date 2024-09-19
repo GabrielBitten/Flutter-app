@@ -1,4 +1,4 @@
-import 'package:appflutter/categoria.dart'; 
+import 'package:appflutter/categoria.dart';
 import 'package:appflutter/my_app.dart';
 import 'package:appflutter/projeto.dart';
 import 'package:flutter/material.dart';
@@ -9,16 +9,7 @@ class ProjectList extends StatefulWidget {
 }
 
 class ProjectListState extends State<ProjectList> {
-
-  List<Projeto> lista = [
-    Projeto(
-      titulo: 'Meu Primeiro Projeto',
-      descricao: 'Este é o meu primeiro projeto de exemplo.',
-      link: 'https://gabrielbitten.github.io/Portfolio/',
-      imageUrl: 'https://storage.googleapis.com/website-production/uploads/2023/07/sweetkick-landing-page-example-1.png',
-      categoria: ProjectCategory.desenvolvimentoDeJogos,
-    ),
-  ];
+  List<Projeto> lista = [];
 
   void adicionarProjeto(Projeto novoProjeto) {
     setState(() {
@@ -31,7 +22,14 @@ class ProjectListState extends State<ProjectList> {
       lista.remove(projeto);
     });
   }
-
+void editarProjeto(Projeto projeto, Projeto novoProjeto) {
+  setState(() {
+    final index = lista.indexOf(projeto);
+    if (index != -1) {
+      lista[index] = novoProjeto; // Atualiza o projeto existente
+    }
+  });
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +48,8 @@ class ProjectListState extends State<ProjectList> {
             iconSize: 35.0,
             color: Colors.white,
             onPressed: () async {
-              final Projeto? novoProjeto = await Navigator.of(context).pushNamed(MyApp.PROJECT_FORM) as Projeto?;
+              final Projeto? novoProjeto = await Navigator.of(context)
+                  .pushNamed(MyApp.PROJECT_FORM) as Projeto?;
               if (novoProjeto != null) {
                 adicionarProjeto(novoProjeto);
               }
@@ -72,9 +71,20 @@ class ProjectListState extends State<ProjectList> {
             child: ListTile(
               title: Text(
                 projeto.titulo,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              subtitle: Text(projeto.categoria.name),
+              subtitle: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      projeto.categoria.name,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ),
+                ],
+              ),
               trailing: SizedBox(
                 width: 150,
                 child: Row(
@@ -82,14 +92,29 @@ class ProjectListState extends State<ProjectList> {
                   children: [
                     IconButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed(
+                        Navigator.of(context)
+                            .pushNamed(
                           MyApp.PROJECT_INFO,
                           arguments: projeto,
-                        ).then((_) {
+                        )
+                            .then((_) {
                           setState(() {});
                         });
                       },
                       icon: const Icon(Icons.open_in_new),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(MyApp.PROJECT_EDIT, arguments: projeto)
+                            .then((novoProjeto) {
+                          if (novoProjeto is Projeto) {
+                            editarProjeto(projeto,
+                                novoProjeto); 
+                          }
+                        });
+                      },
+                      icon: const Icon(Icons.edit),
                     ),
                     IconButton(
                       onPressed: () {
