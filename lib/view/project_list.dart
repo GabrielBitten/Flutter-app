@@ -1,4 +1,4 @@
-import 'package:appflutter/categoria.dart';
+
 import 'package:appflutter/my_app.dart';
 import 'package:appflutter/projeto.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +26,7 @@ void editarProjeto(Projeto projeto, Projeto novoProjeto) {
   setState(() {
     final index = lista.indexOf(projeto);
     if (index != -1) {
-      lista[index] = novoProjeto; // Atualiza o projeto existente
+      lista[index] = novoProjeto; 
     }
   });
 }

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:appflutter/my_app.dart';
 import 'package:appflutter/projeto.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
