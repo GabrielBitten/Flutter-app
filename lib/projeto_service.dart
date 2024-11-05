@@ -4,17 +4,19 @@ import 'package:appflutter/projeto.dart';
 
 class ProjetoService {
   final String baseUrl;
+  http.Client httpClient; 
 
-  ProjetoService(this.baseUrl);
+  ProjetoService(this.baseUrl, {http.Client? client}) 
+      : httpClient = client ?? http.Client(); 
 
   Future<List<Projeto>> getProjetos() async {
-    final response = await http.get(Uri.parse('$baseUrl/projetos'));
+    final response = await httpClient.get(Uri.parse('$baseUrl/projetos'));
     final List<dynamic> jsonList = json.decode(response.body);
     return jsonList.map((json) => Projeto.fromMap(json)).toList();
   }
 
   Future<void> addProjeto(Projeto projeto) async {
-    await http.post(
+    await httpClient.post(
       Uri.parse('$baseUrl/projetos'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -24,7 +26,7 @@ class ProjetoService {
   }
 
   Future<void> updateProjeto(Projeto projeto) async {
-    await http.put(
+    await httpClient.put(
       Uri.parse('$baseUrl/projetos/${projeto.id}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -34,7 +36,7 @@ class ProjetoService {
   }
 
   Future<void> deleteProjeto(String id) async {
-    await http.delete(
+    await httpClient.delete(
       Uri.parse('$baseUrl/projetos/$id'),
     );
   }

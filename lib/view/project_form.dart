@@ -7,6 +7,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ProjectForm extends StatefulWidget {
+  final String apiUrl; 
+  ProjectForm({required this.apiUrl}); 
+
   @override
   _ProjectFormState createState() => _ProjectFormState();
 }
@@ -44,7 +47,7 @@ class _ProjectFormState extends State<ProjectForm> {
     );
 
     final response = await http.post(
-      Uri.parse('http://10.0.2.2:3000/projetos'), 
+      Uri.parse('${widget.apiUrl}/projetos'), // Usando o endpoint fornecido
       headers: {
         'Content-Type': 'application/json',
       },
@@ -75,8 +78,7 @@ class _ProjectFormState extends State<ProjectForm> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
             TextField(
               controller: nameController,
@@ -89,29 +91,26 @@ class _ProjectFormState extends State<ProjectForm> {
               ),
             ),
             const SizedBox(height: 20),
-            Container(
-              width: double.infinity,
-              child: DropdownButtonFormField<ProjectCategory>(
-                value: selectedCategory,
-                decoration: const InputDecoration(
-                  labelText: 'Categoria do Projeto',
-                  labelStyle: TextStyle(
-                    fontSize: 20,
-                  ),
-                  border: OutlineInputBorder(),
+            DropdownButtonFormField<ProjectCategory>(
+              value: selectedCategory,
+              decoration: const InputDecoration(
+                labelText: 'Categoria do Projeto',
+                labelStyle: TextStyle(
+                  fontSize: 20,
                 ),
-                items: ProjectCategory.values.map((ProjectCategory category) {
-                  return DropdownMenuItem<ProjectCategory>(
-                    value: category,
-                    child: Text(_categoryToString(category)),
-                  );
-                }).toList(),
-                onChanged: (ProjectCategory? newValue) {
-                  setState(() {
-                    selectedCategory = newValue;
-                  });
-                },
+                border: OutlineInputBorder(),
               ),
+              items: ProjectCategory.values.map((ProjectCategory category) {
+                return DropdownMenuItem<ProjectCategory>(
+                  value: category,
+                  child: Text(_categoryToString(category)),
+                );
+              }).toList(),
+              onChanged: (ProjectCategory? newValue) {
+                setState(() {
+                  selectedCategory = newValue;
+                });
+              },
             ),
             const SizedBox(height: 20),
             TextField(

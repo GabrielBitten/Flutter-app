@@ -4,26 +4,28 @@ import 'package:appflutter/projeto_service.dart';
 import 'package:flutter/material.dart';
 
 class ProjectList extends StatefulWidget {
+  final ProjetoService projetoService; 
+
+  const ProjectList({Key? key, required this.projetoService}) : super(key: key);
+
   @override
   ProjectListState createState() => ProjectListState();
 }
 
 class ProjectListState extends State<ProjectList> {
-  late ProjetoService projetoService;
   late Future<List<Projeto>> projetos;
 
   @override
   void initState() {
     super.initState();
-    projetoService = ProjetoService('http://10.0.2.2:3000'); // Use 10.0.2.2 para emulador
-    projetos = projetoService.getProjetos();
+    projetos = widget.projetoService.getProjetos(); 
   }
 
   void removeProject(Projeto projeto) async {
     try {
-      await projetoService.deleteProjeto(projeto.id); // Chama a função de exclusão
+      await widget.projetoService.deleteProjeto(projeto.id); 
       setState(() {
-        projetos = projetoService.getProjetos(); // Recarrega a lista
+        projetos = widget.projetoService.getProjetos();
       });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -34,7 +36,7 @@ class ProjectListState extends State<ProjectList> {
 
   void editarProjeto(Projeto projeto, Projeto novoProjeto) {
     setState(() {
-      projetos = projetoService.getProjetos(); 
+      projetos = widget.projetoService.getProjetos(); 
     });
   }
 
@@ -60,7 +62,7 @@ class ProjectListState extends State<ProjectList> {
                   .pushNamed(MyApp.PROJECT_FORM) as Projeto?;
               if (novoProjeto != null) {
                 setState(() {
-                  projetos = projetoService.getProjetos();
+                  projetos = widget.projetoService.getProjetos();
                 });
               }
             },
