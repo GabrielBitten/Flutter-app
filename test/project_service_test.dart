@@ -5,7 +5,7 @@ import 'package:appflutter/projeto.dart';
 
 void main() {
   late ProjetoService projetoService;
-  const baseUrl = 'http://localhost:3000'; // Altere para a URL do seu backend
+  const baseUrl = 'http://localhost:3000'; 
 
   setUp(() {
     projetoService = ProjetoService(baseUrl);
