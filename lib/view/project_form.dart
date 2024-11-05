@@ -3,6 +3,8 @@ import 'package:appflutter/projeto.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ProjectForm extends StatefulWidget {
   @override
@@ -30,6 +32,32 @@ class _ProjectFormState extends State<ProjectForm> {
     setState(() {
       _imageFile = image;
     });
+  }
+
+  Future<void> _saveProject() async {
+    final novoProjeto = Projeto(
+      titulo: nameController.text,
+      descricao: descriptionController.text,
+      link: linkController.text,
+      imageUrl: _imageFile?.path ?? '',
+      categoria: selectedCategory!,
+    );
+
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2:3000/projetos'), 
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(novoProjeto.toMap()),
+    );
+
+    if (response.statusCode == 201) {
+      Navigator.of(context).pop(novoProjeto);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao salvar o projeto.')),
+      );
+    }
   }
 
   @override
@@ -128,20 +156,7 @@ class _ProjectFormState extends State<ProjectForm> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  // ignore: unused_local_variable
-                  final novoProjeto = Projeto(
-                      titulo: nameController.text,
-                      descricao: descriptionController.text,
-                      link: linkController.text,
-                      imageUrl: _imageFile?.path ??
-                          '', 
-                      categoria: selectedCategory!
-                      );
-                      
-                         Navigator.of(context).pop(novoProjeto);
-                },
-                
+                onPressed: _saveProject,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF39D301),
                   shape: RoundedRectangleBorder(
