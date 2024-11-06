@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Instanciando ProjetoService
-    final ProjetoService projetoService = ProjetoService('http://10.0.2.2:3000');
+    final ProjetoService projetoService = ProjetoService('http://localhost:3000');
 
     return MaterialApp(
       title: 'Flutter Demo',
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       routes: {
         HOME: (context) => ProjectList(projetoService: projetoService), 
         PROJECT_EDIT: (context) => ProjectEdit(),
-        PROJECT_FORM: (context) => ProjectForm(apiUrl: 'http://10.0.2.2:3000'),
+        PROJECT_FORM: (context) => ProjectForm(apiUrl: 'http://localhost:3000'),
         PROJECT_INFO: (context) => ProjectInfo(
               onDelete: (Projeto projeto) {
                 final projectListState =

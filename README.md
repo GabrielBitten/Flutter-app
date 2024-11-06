@@ -1,4 +1,6 @@
 # appflutter
+Alterar o localhost para http://10.0.2.2:3000 se for usar emulador
+
 
 A new Flutter project.
 
