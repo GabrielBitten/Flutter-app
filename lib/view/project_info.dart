@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:appflutter/projeto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -10,8 +11,7 @@ class ProjectInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Projeto projeto =
-        ModalRoute.of(context)!.settings.arguments as Projeto;
+    final Projeto projeto = ModalRoute.of(context)!.settings.arguments as Projeto;
 
     return Scaffold(
       appBar: AppBar(
@@ -29,12 +29,22 @@ class ProjectInfo extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.file(
-              File(projeto.imageUrl),
-              width: double.infinity,
-              height: 200,
-              fit: BoxFit.cover,
-            ),
+            kIsWeb || !Platform.isAndroid && !Platform.isIOS
+                ? Image.network(
+                    projeto.imageUrl,
+                    width: double.infinity,
+                    height: 200,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Text('Imagem não disponível neste ambiente');
+                    },
+                  )
+                : Image.file(
+                    File(projeto.imageUrl),
+                    width: double.infinity,
+                    height: 200,
+                    fit: BoxFit.cover,
+                  ),
             const SizedBox(height: 16),
             Text(
               projeto.titulo,
@@ -61,21 +71,17 @@ class ProjectInfo extends StatelessWidget {
                 fontStyle: FontStyle.italic,
               ),
             ),
-           
             const SizedBox(height: 8),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () async {
                   final url = Uri.parse(projeto.link);
-
                   if (await canLaunchUrl(url)) {
-                    await launchUrl(url);
+                    await launchUrl(url, mode: LaunchMode.externalApplication);
                   } else {
-                    // ignore: use_build_context_synchronously
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Não foi possível abrir o link')),
+                      const SnackBar(content: Text('Não foi possível abrir o link')),
                     );
                   }
                 },

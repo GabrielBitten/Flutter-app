@@ -3,6 +3,7 @@ import 'package:appflutter/projeto.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'dart:convert';
 
 class ProjectEdit extends StatefulWidget {
   @override
@@ -20,7 +21,7 @@ class _ProjectEditState extends State<ProjectEdit> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    
+
     final Projeto projeto =
         ModalRoute.of(context)!.settings.arguments as Projeto;
 
@@ -45,6 +46,39 @@ class _ProjectEditState extends State<ProjectEdit> {
     setState(() {
       _imageFile = image;
     });
+  }
+
+  Future<void> updateProject(Projeto projetoEditado) async {
+    try {
+    
+      final file = File('caminho/do/arquivo/projects.json');
+      final contents = await file.readAsString();
+      List<dynamic> projetosList = jsonDecode(contents);
+
+      
+      final index =
+          projetosList.indexWhere((p) => p['id'] == projetoEditado.id);
+
+      if (index != -1) {
+       
+        projetosList[index] = {
+          'id': projetoEditado.id,
+          'titulo': projetoEditado.titulo,
+          'descricao': projetoEditado.descricao,
+          'link': projetoEditado.link,
+          'imageUrl': projetoEditado.imageUrl,
+          'categoria': projetoEditado.categoria.toString(),
+        };
+
+       
+        await file.writeAsString(jsonEncode(projetosList));
+        print("Projeto atualizado com sucesso!");
+      } else {
+        print("Projeto não encontrado.");
+      }
+    } catch (e) {
+      print("Erro ao atualizar o projeto: $e");
+    }
   }
 
   @override
@@ -149,7 +183,7 @@ class _ProjectEditState extends State<ProjectEdit> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   final novoProjeto = Projeto(
                     titulo: nameController.text,
                     descricao: descriptionController.text,
@@ -157,8 +191,11 @@ class _ProjectEditState extends State<ProjectEdit> {
                     imageUrl: _imageFile?.path ?? _existingImagePath ?? '',
                     categoria: selectedCategory!,
                   );
-                  Navigator.of(context).pop(novoProjeto);
-                   
+
+                  await updateProject(
+                      novoProjeto); 
+                  Navigator.of(context)
+                      .pop(novoProjeto);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF39D301),

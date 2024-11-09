@@ -47,7 +47,7 @@ class _ProjectFormState extends State<ProjectForm> {
     );
 
     final response = await http.post(
-      Uri.parse('${widget.apiUrl}/projetos'), // Usando o endpoint fornecido
+      Uri.parse('${widget.apiUrl}/projetos'),
       headers: {
         'Content-Type': 'application/json',
       },

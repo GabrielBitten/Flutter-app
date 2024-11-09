@@ -1,4 +1,5 @@
 import 'package:appflutter/projeto.dart';
+import 'package:appflutter/view/homeScreen.dart';
 import 'package:appflutter/view/project_edit.dart';
 import 'package:appflutter/view/project_form.dart';
 import 'package:appflutter/view/project_info.dart';
@@ -12,10 +13,9 @@ class MyApp extends StatelessWidget {
   static const PROJECT_INFO = '/project_info';
   static const PROJECT_EDIT = '/project_edit';
 
-  @override
+   @override
   Widget build(BuildContext context) {
-    // Instanciando ProjetoService
-    final ProjetoService projetoService = ProjetoService('http://localhost:3000');
+    final ProjetoService projetoService = ProjetoService('http://10.0.2.2:3000');
 
     return MaterialApp(
       title: 'Flutter Demo',
@@ -23,16 +23,16 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: {
-        HOME: (context) => ProjectList(projetoService: projetoService), 
-        PROJECT_EDIT: (context) => ProjectEdit(),
-        PROJECT_FORM: (context) => ProjectForm(apiUrl: 'http://localhost:3000'),
+        HOME: (context) => HomeScreen(projetoService: projetoService),
+        PROJECT_FORM: (context) => ProjectForm(apiUrl: 'http://10.0.2.2:3000'),
         PROJECT_INFO: (context) => ProjectInfo(
-              onDelete: (Projeto projeto) {
-                final projectListState =
-                    context.findAncestorStateOfType<ProjectListState>();
-                projectListState?.removeProject(projeto);
-              },
-            ),
+          onDelete: (Projeto projeto) {
+            final projectListState =
+                context.findAncestorStateOfType<ProjectListState>();
+            projectListState?.removeProject(projeto);
+          },
+        ),
+        PROJECT_EDIT: (context) => ProjectEdit(),
       },
       initialRoute: HOME,
     );
